@@ -1,0 +1,111 @@
+{
+  "name": "my-electron",
+  "private": true,
+  "version": "1.0.0",
+  "main": "dist-electron/electronMain.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "nodemon --exec electron . --watch ./ --ext .js,.html,.css,.vue,.cjs",
+    "app:dist": "electron-builder",
+    "lint": "eslint . --ext .vue,.js,.ts,.jsx,.tsx --fix",
+    "build-electron": "vue-tsc --noEmit && vite build && electron-builder"
+  },
+  "dependencies": {
+    "@typescript-eslint/parser": "^5.51.0",
+    "axios": "^1.2.6",
+    "crypto-js": "^4.1.1",
+    "electron-store": "^8.1.0",
+    "element-plus": "^2.2.28",
+    "js-md5": "^0.7.3",
+    "normalize.css": "^8.0.1",
+    "pinia": "^2.0.29",
+    "pinia-persistedstate-plugin": "^0.1.0",
+    "scroll-into-view-if-needed": "^3.0.10",
+    "terser": "^5.18.1",
+    "vue": "^3.2.45",
+    "vue-router": "^4.1.6",
+    "vue-tsc": "^1.0.24"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.49.0",
+    "@vitejs/plugin-legacy": "^4.0.2",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "electron": "^22.1.0",
+    "electron-builder": "^23.6.0",
+    "eslint": "^8.33.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-vue": "^9.9.0",
+    "less": "^4.1.3",
+    "mitt": "^3.0.0",
+    "nodemon": "^2.0.20",
+    "typescript": "^4.9.5",
+    "unplugin-auto-import": "^0.13.0",
+    "unplugin-vue-components": "^0.23.0",
+    "vite": "^4.0.0",
+    "vite-plugin-electron": "^0.11.1",
+    "vite-plugin-eslint": "^1.8.1"
+  },
+  "build": {
+    "appId": "com.police.desktop",
+    "productName": "多维大数据平台",
+    "asar": true,
+    "copyright": "Copyright © 2022 electron",
+    "publish": {
+      "provider": "generic",
+      "url": ""
+    },
+    "directories": {
+      "output": "electron-build/"
+    },
+    "extraResources": [
+      {
+        "from": "./public",
+        "to": "./public"
+      }
+    ],
+    "files": [
+      "dist-electron",
+      "controller",
+      "electron-preload"
+    ],
+    "mac": {
+      "artifactName": "${productName}_${version}.${ext}",
+      "target": [
+        "dmg"
+      ]
+    },
+    "win": {
+      "icon": "public/logoTemplate.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "artifactName": "${productName}_${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "public/logo.ico",
+      "uninstallerIcon": "public/logo.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "多维大数据平台"
+    },
+    "releaseInfo": {
+      "releaseNotes": "版本更新的具体内容"
+    }
+  }
+}

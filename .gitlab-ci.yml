@@ -1,0 +1,41 @@
+variables:
+  VAR_PATH: '/opt/police-web/'
+  CONTAINER_NAME: 'police-nginx-$CI_BUILD_REF_NAME'
+  F_PORT: 7778
+stages:
+  - build_dist
+  - build_nginx
+  - run
+build_dist:
+  tags:
+    - web
+  stage: build_dist
+  script:
+    - npm config set registry https://registry.npm.taobao.org
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - dist/*
+build_nginx:
+  tags:
+    - web
+  stage: build_nginx
+  script:
+    - docker build -t $CONTAINER_NAME .
+  dependencies:
+    - build_dist
+
+run:
+  tags:
+    - web
+  stage: run
+  before_script:
+    # 关闭docker容器，删除容器
+    - if [ "$(docker ps -a | grep $CONTAINER_NAME)" ]; then
+    - docker rm -f $CONTAINER_NAME
+    - fi
+  script:
+    - docker run -d --name $CONTAINER_NAME -p $F_PORT:80 -v /var/filecenter:/var/filecenter $CONTAINER_NAME
+  dependencies:
+    - build_nginx
